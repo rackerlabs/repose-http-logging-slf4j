@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <groupId>com.rackspace.papi.components</groupId>
-    <artifactId>filters-support</artifactId>
+    <groupId>com.rackspacecloud.blueflood</groupId>
+    <artifactId>http-logging-log4j-support</artifactId>
     <version>3.0.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -12,28 +12,42 @@
   <groupId>com.rackspace.papi.components</groupId>
   <artifactId>http-logging-slf4j</artifactId>
   <name>Repose Components - Http Logging via slf4j Filter</name>
+  <version>3.0.1</version>
 
   <description>TODO</description>
 
   <packaging>jar</packaging>
 
+
   <dependencies>
     <dependency>
       <groupId>com.rackspace.papi.core</groupId>
       <artifactId>core-lib</artifactId>
+      <version>3.0.1</version>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>com.rackspace.papi.commons</groupId>
       <artifactId>utilities</artifactId>
+      <version>3.0.1</version>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.7.5</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 
+  <repositories>
+    <repository>
+      <id>rackspacecloud.com</id>
+      <name>rackspacecloud.com</name>
+      <url>http://maven.research.rackspacecloud.com/content/repositories/releases/</url>
+    </repository>
+  </repositories>
 
 </project>
