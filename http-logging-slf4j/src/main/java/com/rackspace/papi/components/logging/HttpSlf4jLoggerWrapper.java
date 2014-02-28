@@ -1,24 +1,19 @@
 package com.rackspace.papi.components.logging;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.common.collect.Lists;
 import com.rackspace.papi.commons.util.logging.apache.format.stock.RequestLineHandler;
 import com.rackspace.papi.commons.util.logging.apache.format.stock.ResponseMessageHandler;
+import com.rackspace.papi.commons.util.servlet.http.MutableHttpServletResponse;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.MDC;
 
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
-/**
- *
- * @author jhopper
- */
 public class HttpSlf4jLoggerWrapper {
     private static final Logger logger = LoggerFactory.getLogger("repose-http-logger");
 
@@ -55,7 +50,7 @@ public class HttpSlf4jLoggerWrapper {
                 }
             }
             if (value != null) {
-                requestHeaders.put(nextHeaderName, values == null ? values : value);
+                requestHeaders.put(nextHeaderName, values == null ? value : values);
             }
         }
 
@@ -79,19 +74,10 @@ public class HttpSlf4jLoggerWrapper {
 
         int responseStatus = response.getStatus();
         httpMDC.put("status", responseStatus);
-        httpMDC.put("requestContentLength", request.getContentLength());
-        httpMDC.put("responseContentLength", response.getBufferSize());
-        httpMDC.put("contextPath", request.getContextPath());
-        httpMDC.put("servletPath", request.getServletPath());
-        httpMDC.put("cookies", request.getCookies());
         httpMDC.put("method", request.getMethod());
-        httpMDC.put("parameterMap", request.getParameterMap());
-        httpMDC.put("pathInfo", request.getPathInfo());
-        httpMDC.put("pathTranslated", request.getPathTranslated());
         httpMDC.put("protocol", request.getProtocol());
-        httpMDC.put("queryString", request.getQueryString());
         httpMDC.put("requestURI", request.getRequestURI());
-        httpMDC.put("requestURL", request.getRequestURL()).toString();
+        httpMDC.put("requestURL", request.getRequestURL().toString());
         httpMDC.put("scheme", request.getScheme());
         httpMDC.put("serverName", request.getServerName());
         httpMDC.put("serverPort", request.getServerPort());
@@ -99,6 +85,41 @@ public class HttpSlf4jLoggerWrapper {
         httpMDC.put("localPort", request.getLocalPort());
         httpMDC.put("remoteHost", request.getRemoteHost());
         httpMDC.put("remotePort", request.getRemotePort());
+
+        httpMDC.put("requestContentLength", request.getContentLength());
+
+        long responseContentLength = MutableHttpServletResponse.wrap(request, response).getResponseSize();
+        httpMDC.put("responseContentLength", responseContentLength);
+
+
+        String contextPath = request.getContextPath();
+        if (contextPath != null && !contextPath.isEmpty()) {
+            httpMDC.put("contextPath", contextPath);
+        }
+        String servletPath = request.getServletPath();
+        if (servletPath != null && !servletPath.isEmpty()) {
+            httpMDC.put("servletPath", servletPath);
+        }
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        if (parameterMap != null && !parameterMap.isEmpty()) {
+            httpMDC.put("parameterMap", parameterMap);
+        }
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null && cookies.length != 0) {
+            httpMDC.put("cookies", cookies);
+        }
+        String pathInfo = request.getPathInfo();
+        if (pathInfo != null && !pathInfo.isEmpty()) {
+            httpMDC.put("pathInfo", pathInfo);
+        }
+        String pathTranslated = request.getPathTranslated();
+        if (pathTranslated != null && !pathTranslated.isEmpty()) {
+            httpMDC.put("pathTranslated", pathTranslated);
+        }
+        String queryString = request.getQueryString();
+        if (queryString != null && !queryString.isEmpty()) {
+            httpMDC.put("queryString", queryString);
+        }
 
         MDC.setContextMap(httpMDC);
         try {
@@ -111,7 +132,7 @@ public class HttpSlf4jLoggerWrapper {
                     logger.warn(message);
                 }
             } else {
-                logger.info(request.getRequestURI());
+                logger.info(message);
             }
         } finally {
             MDC.clear();
