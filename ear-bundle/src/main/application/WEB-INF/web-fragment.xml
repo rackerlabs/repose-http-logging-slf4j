@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-fragment xmlns="http://java.sun.com/xml/ns/javaee">
+    <filter>
+        <filter-name>http-logging-slf4j</filter-name>
+        <filter-class>com.rackspace.papi.components.logging.HttpLoggingSlf4jFilter</filter-class>
+    </filter>
+</web-fragment>
