@@ -11,7 +11,7 @@
 
   <groupId>com.rackspace.papi.components</groupId>
   <artifactId>http-logging-slf4j-bundle</artifactId>
-  <name>Repose Components - Http Logging via slf4j Filter</name>
+  <name>Http Logging via slf4j Filter ear bundler</name>
 
   <description>TODO</description>
 
